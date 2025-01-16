@@ -1,0 +1,40 @@
+Tabla usuarios
+idUsuario - int, PRIMARY KEY
+username - varchar(45), unique
+email - varcahr(45) unique
+password - varchar(45) 
+telefono - varchar(10), unique;
+
+Tabla citas
+idCita int, PRIMARY
+user_id INTM FK a usuarios.idUsuario
+date - DATETIME
+description TEXT
+estado (ENUM: pendiente, confirmada, cancelada)
+fecha_creacion (TIMESTAMP)
+fecha_actualizacion (TIMESTAMP)
+
+Tabla disponibilidad
+idDisponibilidad INT PRIMARY KEY
+user_id INTM FK a usuarios.idUsuario
+días (ENUM: lunes, martes, miércoles, jueves, viernes, sábado domingo)
+horaIncio -> TIME
+horaFin -> TIME
+
+Tabla recordatorios
+idRecordatorio INT PRIMARY KEY
+citaId, INT, FK citas.idCita
+method -> whatsapp por default
+estado -> (ENUM: 'pendiente', enviado)
+
+Tabla notificaciones
+idNotificaciones INT PRIMARY KEY
+userId INT FK
+mensaje TEXT
+estado (ENUM pendiente, enviado)
+
+Tabla historial_citas
+idHistorial INT PK
+idCita INT FK
+accion ENUM : creada, cancelada, modificada
+

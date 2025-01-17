@@ -7,6 +7,8 @@ use App\Http\Controllers\appointmentController;
 use App\Http\Controllers\serviceController;
 use App\Http\Controllers\contractController;
 use App\Http\Controllers\userController;
+use App\Http\Controllers\ReminderController;
+
 //crud usuarios inicio
 Route::get('/users',[userController::class,'index'] );
 Route::get('/users/{id}', [userController::class, 'show']);
@@ -49,7 +51,12 @@ Route::delete('/availabilities/{id}', [availabilityController::class, 'destroy']
 //crud availabilities fin
 
 //crud appointments inicio
-Route::get('/appointments', [appointmentController::class,'index']);
+Route::post('/appointments', [AppointmentController::class, 'store']);
+Route::get('/appointments', [AppointmentController::class, 'index']);
+Route::put('/appointments/{id}/cancel', [AppointmentController::class, 'cancel']);
+
+
+
 //falta agregar las rutas restantes
 //crud appointments fin
 
@@ -65,6 +72,11 @@ Route::delete('/services/{id}', [serviceController::class, 'destroy']);
 Route::get('/contracts', [contractController::class,'index']);
 //falta agregar las rutas restantes
 //crud contracts fin
+
+//crud reminders inicio
+Route::post('/reminders/send', [reminderController::class, 'sendReminders']);
+
+//crud reminders fin
 
 
 

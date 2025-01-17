@@ -9,7 +9,12 @@ use App\Http\Controllers\contractController;
 use App\Http\Controllers\userController;
 //crud usuarios inicio
 Route::get('/users',[userController::class,'index'] );
-Route::get('/users/{id}', function($id){
+Route::get('/users/{id}', [userController::class, 'show']);
+Route::post('/users', [userController::class, 'store']);
+Route::put('/users/{id}', [userController::class, 'update']);
+Route::delete('/users/{id}', [userController::class, 'destroy']);
+
+/*Route::get('/users/{id}', function($id){
     return response()->json([
         'usuario' => ['usuarioid' => $id,
         ]
@@ -29,7 +34,8 @@ Route::delete('/users/{id}', function($id){
     return response()->json([
         'mensaje' => 'usuario eliminado'
     ]);
-});
+});*/
+
 //crud usuarios fin
 
 //crud availabilities inicio
@@ -49,7 +55,10 @@ Route::get('/appointments', [appointmentController::class,'index']);
 
 //crud service inicio
 Route::get('/services', [serviceController::class, 'index']);
-//falta agregar las rutas restantes
+Route::get('/services/{id}', [serviceController::class, 'show']);
+Route::post('/services', [serviceController::class, 'store']);
+Route::put('/services/{id}', [serviceController::class, 'update']);
+Route::delete('/services/{id}', [serviceController::class, 'destroy']);
 //crud service fin
 
 //crud contracts inicio

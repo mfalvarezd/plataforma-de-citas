@@ -51,8 +51,8 @@ Route::delete('/availabilities/{id}', [availabilityController::class, 'destroy']
 //crud availabilities fin
 
 //crud appointments inicio
-Route::post('/appointments', [AppointmentController::class, 'store']);
 Route::get('/appointments', [AppointmentController::class, 'index']);
+Route::post('/appointments', [AppointmentController::class, 'store']);
 Route::put('/appointments/{id}/cancel', [AppointmentController::class, 'cancel']);
 
 

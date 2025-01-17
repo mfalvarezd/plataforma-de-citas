@@ -9,19 +9,23 @@ class appointmentController extends Controller
 {
 
     //Ver listado de citas
-    public function index(Request $request)
-    {
-        $appointments = Appointment::query();
-
-        if ($request->has('date')) {
-            $appointments->whereDate('date', $request->input('date'));
+    public function index(){
+        $appointments = Appointment::all();
+        if ($appointments->isEmpty()) {
+            return response()->json(['message' => 'No hay citas registradas','status' => 404], 404);
         }
+        return response()->json($appointments, 200);
+    }
 
-        if ($request->has('client_id')) {
-            $appointments->where('client_id', $request->input('client_id'));
+    //Filtrar por fecha
+    public function filterByDate(Request $request){
+        $date = $request->input('date');
+        $appointments = Appointment::whereDate('created_at', $date)->get();
+
+        if ($appointments->isEmpty()) {
+            return response()->json(['message' => 'No hay citas para esta fecha', 'status' => 404], 404);
         }
-
-        return response()->json($appointments->get(), 200);
+        return response()->json($appointments, 200);
     }
 
     //Cancelar una Cita
@@ -37,7 +41,7 @@ class appointmentController extends Controller
         return response()->json(['message' => 'Cita cancelada exitosamente'], 200);
     }
 
-    
+
     //Crear Citas
     public function store(Request $request)
     {

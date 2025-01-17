@@ -6,13 +6,9 @@ use App\Http\Controllers\availabilityController;
 use App\Http\Controllers\appointmentController;
 use App\Http\Controllers\serviceController;
 use App\Http\Controllers\contractController;
+use App\Http\Controllers\userController;
 //crud usuarios inicio
-Route::get('/users', function(){
-    return response()->json([
-        'usuarios' => ['get' => 'listado de usuarios',
-        ]
-    ]);
-});
+Route::get('/users',[userController::class,'index'] );
 Route::get('/users/{id}', function($id){
     return response()->json([
         'usuario' => ['usuarioid' => $id,

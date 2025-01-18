@@ -51,13 +51,14 @@ Route::delete('/availabilities/{id}', [availabilityController::class, 'destroy']
 //crud availabilities fin
 
 //crud appointments inicio
-Route::get('/appointments', [AppointmentController::class, 'index']);
-Route::post('/appointments', [AppointmentController::class, 'store']);
-Route::put('/appointments/{id}/cancel', [AppointmentController::class, 'cancel']);
 
+Route::get('/appointments', [AppointmentController::class, 'index']); // Listar todas las citas
+Route::post('/appointments', [AppointmentController::class, 'store']); // Crear una nueva cita
+Route::put('/appointments/{id}/cancel', [AppointmentController::class, 'cancel']); // Cancelar una cita
+Route::get('/appointments/filter-by-date', [AppointmentController::class, 'filterByDate']); // Filtrar citas por fecha
+Route::get('/appointments/filter-by-client', [AppointmentController::class, 'filterByClient']); // Filtrar citas por cliente
+Route::get('/appointments/filter-by-status', [AppointmentController::class, 'filterByStatus']); // Filtrar citas por estado
 
-
-//falta agregar las rutas restantes
 //crud appointments fin
 
 //crud service inicio
@@ -69,8 +70,13 @@ Route::delete('/services/{id}', [serviceController::class, 'destroy']);
 //crud service fin
 
 //crud contracts inicio
-Route::get('/contracts', [contractController::class,'index']);
-//falta agregar las rutas restantes
+Route::get('/contracts', [contractController::class,'index']); // Listar todos los contratos
+Route::get('/contracts/{id}', [contractController::class, 'show']); // Mostrar un contrato específico
+Route::post('/contracts', [contractController::class, 'store']); // Crear un nuevo contrato
+Route::put('/contracts/{id}', [contractController::class, 'update']); // Actualizar un contrato
+Route::delete('/contracts/{id}', [contractController::class, 'destroy']); // Eliminar un contrato
+
+
 //crud contracts fin
 
 //crud reminders inicio

@@ -1,2 +1,19 @@
-*
-!.gitignore
+# Ignorar archivos de entorno
+.env
+
+# Ignorar otras configuraciones específicas de Laravel
+/public/storage
+/storage/*.key
+
+# Ignorar caché y dependencias
+/vendor
+/node_modules
+
+# Ignorar archivos de depuración o IDE
+.idea
+*.log
+*.swp
+
+# Ignorar archivos generados por el sistema operativo
+.DS_Store
+Thumbs.db

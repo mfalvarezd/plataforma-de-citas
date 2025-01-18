@@ -36,9 +36,7 @@ class appointmentController extends Controller
         $validatedData = $request->validate([
             'availability_id' => 'required|exists:availabilities,id',
             'client_id' => 'required|exists:users,id',
-            'date' => 'required|date',
-            'time' => 'required',
-            'description' => 'nullable|string',
+            'status' => 'required|string|in:pending,completed,cancelled',
         ]);
 
         // Validar que la disponibilidad no esté ya reservada

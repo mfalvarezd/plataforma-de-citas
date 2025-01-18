@@ -24,6 +24,7 @@ class serviceController extends Controller
         ]);
 
         $service = Service::create($validated);
+        return response()->json($service, 200);
     }
 
     public function show($id){

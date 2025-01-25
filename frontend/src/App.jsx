@@ -39,7 +39,7 @@ const App = () => {
           
           {/* Botones Login y Sign Up */}
           <div className="auth-buttons"> 
-            <button onClick={toggleLogin}>
+            <button className="login-button" onClick={toggleLogin}>
               {showLogin ? 'Inicio' : 'Login'}
             </button>
             

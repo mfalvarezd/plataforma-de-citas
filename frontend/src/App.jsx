@@ -1,35 +1,75 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, {useState} from 'react';
+import './App.css';
+import Login from './Components/Login';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  // Estado para determinar si estamos mostrando el login o el contenido original
+  const [showLogin, setShowLogin] = useState(false);
 
+  const toggleLogin = () => {
+    setShowLogin(!showLogin); // Cambia el estado al hacer click
+  };
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div>
+      {/* Header con Navbar y botones */}
+      <header className="header">
+        <div className="header-container">
+          {/* Logo */}
+          <div className="logo">
+            <h2>MiLogo</h2>
+          </div>
 
-export default App
+          {/* Navbar */}
+          <nav className="navbar">
+            <ul>
+              <li>
+                <a href="#home">Inicio</a>
+              </li>
+              <li>
+                <a href="#about">Sobre nosotros</a>
+              </li>
+              <li>
+                <a href="#services">Servicios</a>
+              </li>
+              <li>
+                <a href="#contact">Contacto</a>
+              </li>
+            </ul>
+          </nav>
+          
+          {/* Botones Login y Sign Up */}
+          <div className="auth-buttons"> 
+            <button onClick={toggleLogin}>
+              {showLogin ? 'Inicio' : 'Login'}
+            </button>
+            
+            {!showLogin && (
+              <button className="signup-button">Sign Up</button>
+            )}
+          </div>
+        </div>
+      </header>
+
+      {/* Body */}
+      <main>
+        {showLogin ? (
+          <Login />
+        ) : (
+          <div>
+            <h1>Bienvenido a nuestra plataforma</h1>
+            <p>Contenido principal de la página</p>
+          </div>
+        )}
+        <button className="cta-button">Llamada a la acción</button>
+      </main>
+
+      {/* Footer */}
+      <footer>
+        <p>&copy; 2025 Scheduler</p>
+        <p>Contacto: info@scheduler.com</p>
+      </footer>
+    </div>
+  );
+};
+
+export default App;

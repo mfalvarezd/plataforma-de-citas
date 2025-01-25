@@ -1,42 +1,147 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+/* App.css */
+:root {
+  --azure: #207bff;
+  --ruddy-blue: #4ea5ff;
+  --antiflash-white: #f5f7fa;
+}
+
+.App {
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+main {
+  padding: 20px;
+  background-color: var(--antiflash-white); /* Fondo claro */
+  color: #000000; /* Texto negro */
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+footer {
+  background-color: var(--antiflash-white); /* Fondo del footer */
+  color: #000000;
+  text-align: center;
+  padding: 20px;
+}
+
+.header {
+  background-color: var(--azure); /* Fondo del header */
+  color: white;
+  padding: 50px 20px;
+  border-bottom: 1px solid var(--ruddy-blue); /* Borde elegante */
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo h2 {
+  margin: 0;
+}
+
+.navbar ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar li {
+  margin: 0 15px;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.navbar a:hover {
+  color: var(--antiflash-white); /* Efecto hover */
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.login-button {
+  background-color: var(--antiflash-white);
+  color: black; /* Contraste para texto */
+  border: 1px solid var(--azure); /* Borde opcional para resaltar */
+}
+
+.login-button:hover {
+  background-color: var(--azure); /* Hover más dinámico */
+  color: white;
+}
+
+.signup-button {
+  background-color: var(--ruddy-blue);
+  color: white;
+}
+
+.signup-button:hover {
+  background-color: var(--azure);
+}
+
+.cta-button {
+  background-color: var(--ruddy-blue); /* Botón de llamada a la acción */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: var(--azure); /* Hover del botón */
+}
+
+.features {
+  padding: 30px;
+  color: #000000; /* Texto negro */
+}
+
+.features ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.features li {
+  padding: 10px;
+  color: #000000; /* Texto negro */
+}
+
+/* Media query para dispositivos móviles */
+@media (max-width: 600px) {
+  .header {
+    padding: 20px 10px;
   }
-  to {
-    transform: rotate(360deg);
+
+  .navbar {
+    display: none; /* Esconde el navbar en pantallas muy pequeñas */
   }
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  .cta-button {
+    padding: 8px 16px;
   }
-}
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+  .auth-buttons {
+    flex-direction: column; /* Apila los botones en dispositivos móviles */
+    align-items: center;
+  }
 }

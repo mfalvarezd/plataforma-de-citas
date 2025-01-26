@@ -28,7 +28,8 @@ const App = () => {
           <div className="header-container">
             {/* Logo */}
             <div className="logo">
-              <h2>MiLogo</h2>
+              <h2>Scheduler</h2>
+              
             </div>
 
             {/* Navbar */}
@@ -100,10 +101,13 @@ const App = () => {
                 isLoggedIn && userRole === 'freelancer' ? (
                   <Navigate to="/freelancer" />
                 ) : (
-                  <div>
+                  <div align="center">
                     <h1>Bienvenido a nuestra plataforma</h1>
-                    <p>Contenido principal de la página</p>
-                    <button className="cta-button">Llamada a la acción</button>
+                    <p>La manera más fácil de agendar citas sin complicaciones.</p>
+                    
+                    <button className="cta-button">Empieza ahora!</button><br />
+                    <img src="/src/img/page.png" alt="prueba" />
+                    
                   </div>
                 )
               } 

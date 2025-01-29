@@ -7,7 +7,6 @@ const Sidebar = ({ selected, setSelected }) => {
     { id: "group", icon: <Group />, tooltip: "Teams" },
     { id: "home", icon: <Home />, tooltip: "Home" },
     { id: "video", icon: <VideoCall />, tooltip: "Meetings" },
-    { id: "chat", icon: <ChatBubble />, tooltip: "Messages", notification: true },
     { id: "calendar", icon: <CalendarToday />, tooltip: "Schedule" },
   ];
 

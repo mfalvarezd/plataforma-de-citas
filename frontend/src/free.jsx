@@ -3,7 +3,9 @@ import Sidebar from "./Components/Sidebar";
 import Header from "./Components/Header";
 import Stats from "./Components/Stats";
 import Actions from "./Components/Actions";
+import ContactList from "./Components/ContactList";
 import Calendar from "./Components/Calendar";
+import MeetingTable from "./Components/MeetingTable";
 import UpcomingMeetings from "./Components/UpcomingMeetings";
 import "./free.css";
 
@@ -14,8 +16,10 @@ const Free = () => {
     <div className="dashboard">
       <Sidebar selected={selected} setSelected={setSelected} />
       <main className="main-content">
-        <Header />
-        {selected === "calendar" ? <Calendar /> : (
+        {selected === "calendar" && <Calendar />}
+        {selected === "group" && <ContactList />}
+        {selected === "video" && <MeetingTable />}
+        {selected !== "calendar" && selected !== "group" && selected !== "video" && (
           <>
             <Stats />
             <UpcomingMeetings />

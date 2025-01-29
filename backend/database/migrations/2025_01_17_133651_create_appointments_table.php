@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('availability_id')->constrained('availabilities')->onDelete('cascade'); //relacion con disponibilidades
             $table->foreignId('client_id')->constrained('users')->onDelete('cascade'); // Relación con la tabla users
-            $table->enum('status', ['pending', 'confirmed', 'completed', 'cancelled'])->default('pending'); // Estado de la cita
+            $table->enum('status', ['pending','active', 'confirmed', 'completed', 'cancelled'])->default('pending'); // Estado de la cita
             $table->timestamps();
         });
     }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('service_id')->constrained('services')->onDelete('cascade'); // Relación con la tabla services
             $table->foreignId('client_id')->constrained('users')->onDelete('cascade'); // Relación con la tabla users (cliente)
             $table->foreignId('freelancer_id')->constrained('users')->onDelete('cascade'); // Relación con la tabla users (freelancer)
-            $table->enum('status', allowed: ['pending', 'confirmed', 'completed', 'cancelled'])->default('pending'); // Estado del contrato
+            $table->enum('status', allowed: ['pending','active', 'confirmed', 'completed', 'cancelled'])->default('pending'); // Estado del contrato
             $table->timestamps(); 
         });
     }

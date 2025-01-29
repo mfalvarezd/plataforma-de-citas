@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import './App.css';
 import Login from './Components/Login';
 import FreelancerDashboard from './Components/FreelancerDashboard';
+import SignUp from './Components/SignUp';
 // Puedes importar otros dashboards en el futuro si lo deseas
 import { BrowserRouter as Router, Route, Routes, Navigate, Link } from 'react-router-dom';
 
@@ -72,7 +73,9 @@ const App = () => {
               )}
               
               {!isLoggedIn && (
-                <button className="signup-button">Sign Up</button>
+                <button className="signup-button">
+                  <Link to="/signup" style={{ textDecoration: 'none', color: 'inherit' }}>Sign Up</Link>
+                </button>
               )}
             </div>
           </div>
@@ -94,6 +97,10 @@ const App = () => {
                   <Navigate to="/login" />
                 )
               } 
+            />
+            <Route 
+              path="/signup" 
+              element={<SignUp />} 
             />
             <Route 
               path="/" 

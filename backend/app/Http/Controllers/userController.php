@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class userController extends Controller
+class UserController extends Controller
 {
     public function index()
     {
@@ -33,6 +33,7 @@ class userController extends Controller
             'email'=>'required|email|unique:users,email',
             'password'=>'required|string|min:8',
             'phone'=>'nullable|string|max:10',
+            'role' => 'required|string|in:cliente,freelancer', // Validar el campo 'role'
         ]);
 
         if($validator->fails()){
@@ -48,6 +49,7 @@ class userController extends Controller
             'email'=>$request->email,
             'password' =>Hash::make($request->password),
             'phone'=>$request->phone,
+            'role' => $request->role, // Guardar el campo 'role'
         ]);
 
         return response()->json([
@@ -67,6 +69,7 @@ class userController extends Controller
             'email' => 'sometimes|email|unique:users,email,' . $id,
             'password' => 'sometimes|string|min:8',
             'phone' => 'nullable|string|max:15',
+            'role' => 'sometimes|required|string|in:cliente,freelancer', // Validar el campo 'role'
         ]);
 
         if($validator->fails()){
@@ -88,6 +91,9 @@ class userController extends Controller
         }
         if($request->has('phone')){
             $user->phone=$request->phone;
+        }
+        if($request->has('role')){
+            $user->role=$request->role;
         }
 
         $user->save();

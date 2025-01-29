@@ -27,6 +27,7 @@
     "@schedule-x/react": "^2.14.1",
     "@schedule-x/theme-default": "^2.15.1",
     "@tailwindcss/vite": "^4.0.0",
+    "axios": "^1.7.9",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-login-page": "^1.0.4",

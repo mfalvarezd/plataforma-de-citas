@@ -8,6 +8,7 @@ import InfoSections from './Components/InfoSections'; // Import the InfoSections
 import Services from './Components/Services'; // Import the Services component
 import Contacto from './Components/Contacto'; // Import the Contacto component
 import { BrowserRouter as Router, Route, Routes, Navigate, Link } from 'react-router-dom';
+import Free from './free';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -95,6 +96,17 @@ const App = () => {
               element={
                 isLoggedIn && userRole === 'freelancer' ? (
                   <FreelancerDashboard />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              } 
+            />
+
+<Route 
+              path="/cliente/*" 
+              element={
+                isLoggedIn && userRole === 'cliente' ? (
+                  <Free />
                 ) : (
                   <Navigate to="/login" />
                 )

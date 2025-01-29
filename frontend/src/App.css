@@ -25,7 +25,7 @@ footer {
 .header {
   background-color: var(--azure); /* Fondo del header */
   color: white;
-  padding: 50px 20px;
+  padding: 20px 20px;
   border-bottom: 1px solid var(--ruddy-blue); /* Borde elegante */
 }
 
@@ -81,6 +81,7 @@ button {
   background-color: var(--antiflash-white);
   color: black; /* Contraste para texto */
   border: 1px solid var(--azure); /* Borde opcional para resaltar */
+  width: 90px;
 }
 
 .login-button:hover {
@@ -91,6 +92,7 @@ button {
 .signup-button {
   background-color: var(--ruddy-blue);
   color: white;
+  width: 100px;
 }
 
 .signup-button:hover {

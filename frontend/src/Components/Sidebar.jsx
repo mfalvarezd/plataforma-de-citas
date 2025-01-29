@@ -2,14 +2,11 @@ import React, { useState } from "react";
 import { Box, Avatar, IconButton, Tooltip, Badge } from "@mui/material";
 import { Group, Home, VideoCall, Lock, ChatBubble, CalendarToday } from "@mui/icons-material";
 
-const Sidebar = () => {
-  const [selected, setSelected] = useState("home"); // Estado para la selección activa
-
+const Sidebar = ({ selected, setSelected }) => {
   const menuItems = [
     { id: "group", icon: <Group />, tooltip: "Teams" },
     { id: "home", icon: <Home />, tooltip: "Home" },
     { id: "video", icon: <VideoCall />, tooltip: "Meetings" },
-    { id: "lock", icon: <Lock />, tooltip: "Security" },
     { id: "chat", icon: <ChatBubble />, tooltip: "Messages", notification: true },
     { id: "calendar", icon: <CalendarToday />, tooltip: "Schedule" },
   ];
@@ -18,7 +15,8 @@ const Sidebar = () => {
     <Box
       sx={{
         width: 100,
-        height: "100vh",
+        height: "60vh",
+        marginTop: "140px",
         backgroundColor: "#F8F9FA",
         display: "flex",
         flexDirection: "column",
@@ -29,7 +27,6 @@ const Sidebar = () => {
         top: 0,
         left: 0,
         zIndex: 1000, // Asegura que esté por encima de otros elementos
-        boxShadow: "2px 0 5px rgba(0, 0, 0, 0.1)", // Opcional, para dar un efecto de sombra
       }}
     >
       {/* Íconos de Menú */}

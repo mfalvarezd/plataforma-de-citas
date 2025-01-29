@@ -15,7 +15,8 @@ Route::get('/users/{id}', [userController::class, 'show']);
 Route::post('/users', [userController::class, 'store']);
 Route::put('/users/{id}', [userController::class, 'update']);
 Route::delete('/users/{id}', [userController::class, 'destroy']);
-
+Route::post('/login', [userController::class, 'login']);
+Route::get('/users/email/{correo}', [userController::class, 'showByEmail']);
 /*Route::get('/users/{id}', function($id){
     return response()->json([
         'usuario' => ['usuarioid' => $id,

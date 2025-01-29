@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from '../api/axios'; // Importar la instancia de axios configurada
 import './SignUp.css'; // Importar el archivo CSS
 
 const SignUp = () => {
@@ -27,7 +27,7 @@ const SignUp = () => {
     }
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/users', {
+      const response = await axios.post('/users', {
         name,
         email,
         password,

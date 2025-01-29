@@ -4,7 +4,9 @@ import './App.css';
 import Login from './Components/Login';
 import FreelancerDashboard from './Components/FreelancerDashboard';
 import SignUp from './Components/SignUp';
-// Puedes importar otros dashboards en el futuro si lo deseas
+import InfoSections from './Components/InfoSections'; // Import the InfoSections component
+import Services from './Components/Services'; // Import the Services component
+import Contacto from './Components/Contacto'; // Import the Contacto component
 import { BrowserRouter as Router, Route, Routes, Navigate, Link } from 'react-router-dom';
 
 const App = () => {
@@ -40,13 +42,13 @@ const App = () => {
                   <Link to="/">Inicio</Link>
                 </li>
                 <li>
-                  <Link to="#about">Sobre nosotros</Link>
+                  <Link to="/about">Sobre nosotros</Link>
                 </li>
                 <li>
-                  <Link to="#services">Servicios</Link>
+                  <Link to="/services">Servicios</Link>
                 </li>
                 <li>
-                  <Link to="#contact">Contacto</Link>
+                  <Link to="/contact">Contacto</Link>
                 </li>
               </ul>
             </nav>
@@ -119,6 +121,9 @@ const App = () => {
                 )
               } 
             />
+            <Route path="/about" element={<InfoSections />} />
+            <Route path="/services" element={<Services />} /> {/* Add Services route */}
+            <Route path="/contact" element={<Contacto />} /> {/* Add Contacto route */}
             {/* Ruta catch-all para cualquier ruta no definida */}
             <Route 
               path="*" 

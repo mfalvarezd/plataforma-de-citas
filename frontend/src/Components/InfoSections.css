@@ -1,0 +1,19 @@
+.info-sections {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.info-sections section {
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9; /* Adjust this color to match your page's color scheme */
+}
+
+.info-sections h2 {
+  color: #333; /* Adjust this color to match your page's color scheme */
+}
+
+.info-sections p {
+  color: #666; /* Adjust this color to match your page's color scheme */
+}

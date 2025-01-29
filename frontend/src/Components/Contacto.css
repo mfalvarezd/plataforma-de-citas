@@ -1,0 +1,55 @@
+.contact-section {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.contact-section h2 {
+  color: #333; /* Adjust this color to match your page's color scheme */
+  text-align: center;
+}
+
+.contact-section p {
+  color: #666; /* Adjust this color to match your page's color scheme */
+  text-align: center;
+}
+
+.contact-section .form-group {
+  margin-bottom: 15px;
+}
+
+.contact-section label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333; /* Adjust this color to match your page's color scheme */
+}
+
+.contact-section input,
+.contact-section textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.contact-section textarea {
+  resize: vertical;
+  height: 100px;
+}
+
+.contact-section button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007BFF; /* Adjust this color to match your page's color scheme */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.contact-section button:hover {
+  background-color: #0056b3; /* Adjust this color to match your page's color scheme */
+}

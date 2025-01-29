@@ -1,0 +1,25 @@
+.services-section {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.services-section h2 {
+  color: #333; /* Adjust this color to match your page's color scheme */
+}
+
+.services-section p {
+  color: #666; /* Adjust this color to match your page's color scheme */
+}
+
+.services-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.services-section li {
+  background-color: #f9f9f9; /* Adjust this color to match your page's color scheme */
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 8px;
+  color: #333; /* Adjust this color to match your page's color scheme */
+}

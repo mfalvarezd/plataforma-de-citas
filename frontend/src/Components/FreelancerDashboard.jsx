@@ -15,9 +15,7 @@ const FreelancerDashboard = ({ user }) => { // Recibir el objeto user como prop
           <li>
             <Link to="upload-service">Subir Servicio</Link>
           </li>
-          <li>
-            <Link to="set-availability">Configurar Disponibilidad</Link>
-          </li>
+          
           <li>
             <Link to="scheduled-services">Servicios Agendados</Link>
           </li>

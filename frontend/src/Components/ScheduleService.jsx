@@ -134,12 +134,7 @@ const ScheduledServices = ({ user }) => { // Recibir el objeto user como prop
       )}
       
       {/* Mostrar el calendario con contratos activos */}
-      {activeContracts.length > 0 && (
-        <div>
-          <h3>Calendario de Servicios Activos</h3>
-          <CalendarFreelancer contracts={activeContracts} />
-        </div>
-      )}
+      
     </div>
   );
 };

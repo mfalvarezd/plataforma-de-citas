@@ -26,7 +26,7 @@ const Free = () => {
       <Sidebar selected={selected} setSelected={setSelected} />
       <main className="main-content">
         {selected === "calendar" && <Calendar />}
-        {selected === "group" && <ContactList />}
+        {selected === "group" && <ContactList user={user}/>}
         {selected === "video" && <MeetingTable user={user} />}
         {selected !== "calendar" && selected !== "group" && selected !== "video" && (
           <>

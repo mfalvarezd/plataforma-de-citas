@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 
-const ContactList = () => {
+const ContactList = ({ user }) => {
   const [search, setSearch] = useState("");
   const [contacts, setContacts] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -29,6 +29,12 @@ const ContactList = () => {
   const [openServices, setOpenServices] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
+  const clientId = localStorage.getItem("clientId"); // Reemplaza con el método que uses para obtener el cliente logueado
+  const [startTime, setStartTime] = useState(""); // Hora de inicio en formato "HH:mm"
+  const [endTime, setEndTime] = useState(""); // Hora de fin en formato "HH:mm"
+  const [contractDate, setContractDate] = useState(""); // Fecha en formato "YYYY-MM-DD"
+
+
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -70,16 +76,27 @@ const ContactList = () => {
   };
 
   const handleConfirmContract = async () => {
-    if (!selectedService || !selectedUser) return;
+    if (!selectedService || !selectedUser || !startTime || !endTime || !contractDate) return;
+
+    const isValidTimeFormat = (time) => /^([01]?[0-9]|2[0-3]):([0-5][0-9])$/.test(time);
+    if (!isValidTimeFormat(startTime) || !isValidTimeFormat(endTime)) {
+      setMessage({ text: "Por favor ingrese las horas en formato válido (HH:mm).", type: "error" });
+      return;
+    }
+
+    if (!contractDate) {
+      setMessage({ text: "Por favor seleccione una fecha.", type: "error" });
+      return;
+    }
 
     const contractData = {
       service_id: selectedService.id,
-      client_id: 2, // Reemplazar con el ID del cliente autenticado
+      client_id: user.id, // Reemplazar con el ID del cliente autenticado
       freelancer_id: selectedUser.id,
       status: "pending",
-      date: new Date().toISOString().split("T")[0], // Fecha actual
-      start_time: "09:00", // Se puede mejorar para que el usuario lo seleccione
-      end_time: "10:00",
+      date: contractDate, // Fecha actual
+      start_time: startTime, // Se puede mejorar para que el usuario lo seleccione
+      end_time: endTime,
     };
 
     try {
@@ -91,6 +108,10 @@ const ContactList = () => {
 
     setConfirmDialog(false);
     setSelectedService(null);
+    setStartTime("");
+    setEndTime("");
+    setContractDate("");
+
   };
 
   const filteredContacts = contacts.filter(contact =>
@@ -155,6 +176,41 @@ const ContactList = () => {
         <DialogTitle>Confirmar Contrato</DialogTitle>
         <DialogContent>
           <Typography>¿Deseas crear un contrato para el servicio "{selectedService?.title}"?</Typography>
+
+          <Box sx={{ mt: 2 }}>
+            <Typography>Fecha de contrato:</Typography>
+            <TextField
+              type="date"
+              value={contractDate}
+              onChange={(e) => setContractDate(e.target.value)}
+              fullWidth
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+
+          </Box>
+          <Box sx={{ mt: 2 }}>
+            <Typography>Hora de inicio (formato HH:mm):</Typography>
+            <TextField
+              type="text"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+              placeholder="Ej. 09:00"
+              fullWidth
+            />
+          </Box>
+
+          <Box sx={{ mt: 2 }}>
+            <Typography>Hora de fin (formato HH:mm):</Typography>
+            <TextField
+              type="text"
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
+              placeholder="Ej. 17:00"
+              fullWidth
+            />
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setConfirmDialog(false)} color="secondary">Cancelar</Button>

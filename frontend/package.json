@@ -19,6 +19,7 @@
     "@fullcalendar/timegrid": "^6.1.15",
     "@mui/icons-material": "^6.4.1",
     "@mui/material": "^6.4.1",
+    "@mui/x-date-pickers": "^7.24.1",
     "@react-login-page/page11": "^1.0.4",
     "@schedule-x/calendar": "^2.15.1",
     "@schedule-x/drag-and-drop": "^2.15.1",

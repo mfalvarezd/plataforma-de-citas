@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "./Components/Sidebar";
 import Header from "./Components/Header";
 import Stats from "./Components/Stats";
@@ -9,8 +9,18 @@ import MeetingTable from "./Components/MeetingTable";
 import UpcomingMeetings from "./Components/UpcomingMeetings";
 import "./free.css";
 
-const Free = ({user}) => {
+const Free = () => {
   const [selected, setSelected] = useState("home");
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // Recuperar el usuario desde localStorage
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    if (storedUser) {
+      setUser(storedUser);
+    }
+  }, []);
+
   return (
     <div className="dashboard">
       <Sidebar selected={selected} setSelected={setSelected} />

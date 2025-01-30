@@ -3,9 +3,9 @@ import axios from "axios";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Avatar, Chip, Typography, Link, Paper, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const getStatusColor = (status) => {
+const getStatusClass = (status) => {
   switch (status) {
-    case "Finalizado":
+    case "success":
       return "success";
     case "En proceso":
       return "warning";
@@ -20,18 +20,23 @@ const MeetingTable = ({ user }) => {
   const [meetings, setMeetings] = useState([]); // Estado inicial vacío
 
   useEffect(() => {
+    console.log("useEffect triggered");
     if (user && user.idUser) {
+      console.log("User ID:", user.idUser);
       // Llamada a la API para obtener las reuniones del usuario
       axios
-        .get(`/api/appointments/filter-by-client/${user.idUser}`)
+        .get(`/api/appointments/filter-by-client?idUser=${user.idUser}`)
         .then((response) => {
+          console.log("API response:", response.data);
           setMeetings(response.data);
         })
         .catch((error) => {
-          console.error("Error fetching meetings:", error);
+          console.error("Error fetching meetings:", error.response ? error.response.data : error.message);
         });
+    } else {
+      console.log("User or user.idUser is not defined");
     }
-  }, [user.idUser]);
+  }, [user]);
 
   return (
     <TableContainer component={Paper} sx={{ mt: 3, p: 2, borderRadius: 2, boxShadow: 3, width: "96%", margin: "auto" }}>
@@ -64,7 +69,7 @@ const MeetingTable = ({ user }) => {
                   </Link>
                 </TableCell>
                 <TableCell>
-                  <Chip label={meeting.status} color={getStatusColor(meeting.status)} />
+                  <Chip label={meeting.status} color={getStatusClass(meeting.status)} />
                 </TableCell>
                 <TableCell>
                   {meeting.status === "Finalizado" && (

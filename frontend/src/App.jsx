@@ -1,8 +1,7 @@
 // src/App.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Login from './Components/Login';
-import Free from './free'
 import FreelancerDashboard from './Components/FreelancerDashboard';
 import SignUp from './Components/SignUp';
 import InfoSections from './Components/InfoSections';
@@ -16,49 +15,17 @@ const App = () => {
   const [userRole, setUserRole] = useState(null); // 'freelancer' o 'cliente'
   const [user, setUser] = useState(null); // Almacena el objeto completo del usuario
 
-  useEffect(() => {
-    // Recuperar el estado de la sesión desde localStorage
-    const storedIsLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    const storedUserRole = localStorage.getItem('userRole');
-    const storedUser = JSON.parse(localStorage.getItem('user'));
-
-    if (storedIsLoggedIn && storedUserRole && storedUser) {
-      setIsLoggedIn(storedIsLoggedIn);
-      setUserRole(storedUserRole);
-      setUser(storedUser);
-    }
-  }, []);
-
-  useEffect(() => {
-    // Guardar la última ruta visitada en localStorage
-    const currentPath = window.location.pathname;
-    localStorage.setItem('lastPath', currentPath);
-  }, [window.location.pathname]);
-
   const handleLogin = (role, userData) => {
     setIsLoggedIn(true);
     setUserRole(role);
     setUser(userData);
-
-    // Guardar el estado de la sesión en localStorage
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('userRole', role);
-    localStorage.setItem('user', JSON.stringify(userData));
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUserRole(null);
     setUser(null);
-
-    // Eliminar el estado de la sesión de localStorage
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('user');
-    localStorage.removeItem('lastPath');
   };
-
-  const lastPath = localStorage.getItem('lastPath') || '/';
 
   return (
     <Router>
@@ -135,23 +102,11 @@ const App = () => {
                 )
               } 
             />
-
-            <Route 
-              path="/cliente/*" 
-              element={
-                isLoggedIn && userRole === 'cliente' ? (
-                  <Free user={user}/> // Pasar el objeto user como prop
-                ) : (
-                  <Navigate to="/login" />
-                )
-              } 
-            />
-            
             <Route 
               path="/" 
               element={
                 isLoggedIn && userRole === 'freelancer' ? (
-                  <Navigate to={lastPath} />
+                  <Navigate to="/freelancer" />
                 ) : (
                   <div className="home-content">
                     

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import Login from './Components/Login';
+import Free from './free'
 import FreelancerDashboard from './Components/FreelancerDashboard';
 import { BrowserRouter as Router, Route, Routes, Navigate, Link } from 'react-router-dom';
 
@@ -95,6 +96,18 @@ const App = () => {
                 )
               } 
             />
+
+            <Route 
+              path="/cliente/*" 
+              element={
+                isLoggedIn && userRole === 'cliente' ? (
+                  <Free user={user}/> // Pasar el objeto user como prop
+                ) : (
+                  <Navigate to="/login" />
+                )
+              } 
+            />
+            
             <Route 
               path="/" 
               element={

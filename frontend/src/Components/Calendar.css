@@ -1,0 +1,42 @@
+/* Estilos personalizados de FullCalendar */
+.fc .fc-daygrid-day-number {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Ocultar eventos de todo el día */
+.fc-daygrid-block-event {
+  display: none;
+}
+
+/* Estilos de eventos con colores según categoría */
+.meeting {
+  background-color: #3a87ad !important;
+  border-left: 5px solid #1e5786 !important;
+  color: white !important;
+}
+
+.lunch {
+  background-color: #f39c12 !important;
+  border-left: 5px solid #d68910 !important;
+  color: white !important;
+}
+
+.workshop {
+  background-color: #9b59b6 !important;
+  border-left: 5px solid #76448a !important;
+  color: white !important;
+}
+
+.review {
+  background-color: #2ecc71 !important;
+  border-left: 5px solid #27ae60 !important;
+  color: white !important;
+}
+
+/* Bordes redondeados en los eventos */
+.fc-event {
+  border-radius: 8px !important;
+  padding: 5px !important;
+  font-size: 14px !important;
+}

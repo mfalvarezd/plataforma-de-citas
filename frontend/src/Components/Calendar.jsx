@@ -1,32 +1,68 @@
-import React from "react";
-import { ScheduleXCalendar, useCalendarApp } from "@schedule-x/react";
-import { createViewWeek, createViewMonthGrid } from "@schedule-x/calendar";
-import "@schedule-x/theme-default/dist/calendar.css";
-import { createEventModalPlugin } from "@schedule-x/event-modal";
-import { createDragAndDropPlugin } from "@schedule-x/drag-and-drop";
+import React, { useEffect, useState } from "react";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import { DateTime } from "luxon";
+import axios from "../api/axios"; // Asegúrate de configurar axios correctamente
 
-function Calendar() {
-  // Configuración del calendario usando useCalendarApp
-  const calendar = useCalendarApp({
-    views: [
-      createViewWeek(),
-      createViewMonthGrid(),
-    ],
-    events: [
-      {
-        id: 1,
-        title: "Reunión con ....",
-        start: "2025-01-24 00:00",
-        end: "2025-01-24 02:00",
-        description: "My new event",
-      },
-    ],
-    selectDate: "2025-01-25 00:00",
-    plugins:[createEventModalPlugin(), createDragAndDropPlugin()]
-  });
+function Calendar({ user }) {
+  const [events, setEvents] = useState([]);
 
-  // Retorno del componente ScheduleXCalendar
-  return <ScheduleXCalendar calendarApp={calendar} />;
+  // Función para obtener contratos desde la API
+  const fetchContracts = async () => {
+    try {
+      const response = await axios.get("/contracts", {
+        params: { client_id: user.id },
+      });
+
+      console.log("Contratos obtenidos:", response.data);
+
+      // Convertir contratos a eventos para FullCalendar
+      const formattedEvents = response.data.map((contract) => ({
+        id: contract.id,
+        title: `Contrato con ${contract.freelancer.name}`,
+        start: DateTime.fromFormat(
+          `${contract.date} ${contract.start_time}`,
+          "yyyy-MM-dd HH:mm"
+        ).toISO(),
+        end: DateTime.fromFormat(
+          `${contract.date} ${contract.end_time}`,
+          "yyyy-MM-dd HH:mm"
+        ).toISO(),
+        description: `Servicio: ${contract.service.title}`,
+      }));
+
+      console.log("Eventos formateados:", formattedEvents);
+      setEvents(formattedEvents);
+    } catch (error) {
+      console.error("Error fetching contracts:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchContracts();
+    }
+  }, [user]);
+
+  return (
+    <div style={{ maxWidth: "90%", margin: "auto", padding: "20px" }}>
+      <h2>Calendario de Contratos</h2>
+      <FullCalendar
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+        initialView="timeGridWeek"
+        headerToolbar={{
+          left: "prev,next today",
+          center: "title",
+          right: "dayGridMonth,timeGridWeek,timeGridDay",
+        }}
+        events={events}
+        editable={true}
+        droppable={true}
+      />
+    </div>
+  );
 }
 
 export default Calendar;

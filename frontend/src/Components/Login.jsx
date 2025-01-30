@@ -1,7 +1,7 @@
 // src/Components/Login.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from '../api/axios'; // Importar la instancia de axios configurada
+import api from '../api/axios'; // Importar la instancia de axios configurada
 import LoginPage, { Username, Password, Submit, Title, Logo, Banner, Footer } from '@react-login-page/page11';
 import LoginLogo from 'react-login-page/logo-rect';
 import LoginBannerBgImg from '../img/meeting.png';
@@ -10,29 +10,26 @@ const Login = ({ onLogin }) => { // Asegúrate de recibir la prop onLogin
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(true); // Estado para visibilidad del password
-  const [role, setRole] = useState('freelancer'); // Estado para el rol, por defecto 'freelancer'
-  
   const navigate = useNavigate(); // Hook para la navegación
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       // Realizar la solicitud de inicio de sesión
-      const loginResponse = await axios.post('/login', {
+      const loginResponse = await api.post('/login', {
         email: username, 
         password,
       });
       console.log('Login successful', loginResponse.data);
 
       // Recuperar el usuario por email
-      const userResponse = await axios.get(`/users/email/${username}`);
+      const userResponse = await api.get(`/users/email/${username}`);
       console.log('User details', userResponse.data);
 
       // Obtener el rol del usuario desde la respuesta
       const userRole = userResponse.data.role;
-      setRole(userRole); // Guardar el rol en el estado
-
-      onLogin(userRole); // Pasar el rol al componente padre
+      const userData = userResponse.data; // Obtener todos los datos del usuario
+      onLogin(userRole, userData); // Pasar el rol y los datos al componente padre
 
       // Redirigir según el rol del usuario
       if (userRole === 'freelancer') {
@@ -42,7 +39,7 @@ const Login = ({ onLogin }) => { // Asegúrate de recibir la prop onLogin
       }
     } catch (error) {
       console.error('There was an error logging in!', error.response ? error.response.data : error.message);
-      alert('There was an error logging in!');
+      alert('Hubo un error al iniciar sesión. Verifica tus credenciales.');
     }
   };
 
@@ -67,9 +64,6 @@ const Login = ({ onLogin }) => { // Asegúrate de recibir la prop onLogin
           onChange={(e) => setPassword(e.target.value)}
           visible={passwordVisible} // Cambiar la visibilidad del password
         />
-        
-        
-        
         <Submit 
           onClick={handleSubmit} // Manejar el submit al hacer clic en el botón
         >

@@ -1,12 +1,16 @@
 // src/Components/UploadService.jsx
 import React, { useState } from 'react';
+import api from '../api/axios'; // Importar la instancia de axios configurada
+import { useNavigate } from 'react-router-dom';
 
-const UploadService = () => {
+const UploadService = ({ user }) => { // Recibir el objeto user como prop
   const [service, setService] = useState({
-    name: '',
+    title: '',
     description: '',
     price: '',
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setService({
@@ -15,13 +19,31 @@ const UploadService = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Aquí realizarías una llamada a la API para guardar el servicio
-    console.log('Servicio Subido:', service);
-    // Resetear el formulario
-    setService({ name: '', description: '', price: '' });
-    alert('Servicio subido exitosamente!');
+    try {
+      // Preparar los datos para enviar
+      const serviceData = {
+        freelancer_id: user.id, // Obtener el ID del freelancer del objeto user
+        title: service.title,
+        description: service.description,
+        price: parseFloat(service.price), // Asegurarse de que el precio sea numérico
+      };
+
+      // Realizar la solicitud POST para crear el servicio
+      const response = await api.post('/services', serviceData);
+      console.log('Servicio creado:', response.data);
+
+      alert('Servicio subido exitosamente!');
+      // Resetear el formulario
+      setService({ title: '', description: '', price: '' });
+
+      // Opcional: Redirigir al usuario o actualizar el estado
+      navigate('/freelancer/scheduled-services'); // Por ejemplo, redirigir a servicios agendados
+    } catch (error) {
+      console.error('Error al subir el servicio:', error.response ? error.response.data : error.message);
+      alert('Hubo un error al subir el servicio. Verifica los datos e intenta nuevamente.');
+    }
   };
 
   return (
@@ -29,11 +51,11 @@ const UploadService = () => {
       <h2>Subir Nuevo Servicio</h2>
       <form onSubmit={handleSubmit} className="service-form">
         <div className="form-group">
-          <label>Nombre del Servicio:</label>
+          <label>Título del Servicio:</label>
           <input 
             type="text" 
-            name="name" 
-            value={service.name} 
+            name="title" 
+            value={service.title} 
             onChange={handleChange} 
             required 
             placeholder="Ej. Diseño de Logo"

@@ -3,25 +3,23 @@ import React, { useState } from 'react';
 import './App.css';
 import Login from './Components/Login';
 import FreelancerDashboard from './Components/FreelancerDashboard';
-import SignUp from './Components/SignUp';
-import InfoSections from './Components/InfoSections'; // Import the InfoSections component
-import Services from './Components/Services'; // Import the Services component
-import Contacto from './Components/Contacto'; // Import the Contacto component
 import { BrowserRouter as Router, Route, Routes, Navigate, Link } from 'react-router-dom';
-import Free from './free';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState(null); // 'freelancer' o 'cliente'
+  const [user, setUser] = useState(null); // Almacena el objeto completo del usuario
 
-  const handleLogin = (role) => {
+  const handleLogin = (role, userData) => {
     setIsLoggedIn(true);
     setUserRole(role);
+    setUser(userData);
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUserRole(null);
+    setUser(null);
   };
 
   return (
@@ -32,8 +30,7 @@ const App = () => {
           <div className="header-container">
             {/* Logo */}
             <div className="logo">
-              <h2>Scheduler</h2>
-              
+              <h2>MiLogo</h2>
             </div>
 
             {/* Navbar */}
@@ -43,13 +40,13 @@ const App = () => {
                   <Link to="/">Inicio</Link>
                 </li>
                 <li>
-                  <Link to="/about">Sobre nosotros</Link>
+                  <a href="#about">Sobre nosotros</a>
                 </li>
                 <li>
-                  <Link to="/services">Servicios</Link>
+                  <a href="#services">Servicios</a>
                 </li>
                 <li>
-                  <Link to="/contact">Contacto</Link>
+                  <a href="#contact">Contacto</a>
                 </li>
               </ul>
             </nav>
@@ -57,9 +54,12 @@ const App = () => {
             {/* Botones Login y Sign Up */}
             <div className="auth-buttons"> 
               {!isLoggedIn ? (
-                <button className="login-button">
-                  <Link to="/login" style={{ textDecoration: 'none', color: 'inherit' }}>Login</Link>
-                </button>
+                <>
+                  <button className="login-button">
+                    <Link to="/login" style={{ textDecoration: 'none', color: 'inherit' }}>Login</Link>
+                  </button>
+                  <button className="signup-button">Sign Up</button>
+                </>
               ) : (
                 <>
                   {/* Mostrar Dashboard y Logout */}
@@ -73,12 +73,6 @@ const App = () => {
                     Logout
                   </button>
                 </>
-              )}
-              
-              {!isLoggedIn && (
-                <button className="signup-button">
-                  <Link to="/signup" style={{ textDecoration: 'none', color: 'inherit' }}>Sign Up</Link>
-                </button>
               )}
             </div>
           </div>
@@ -95,26 +89,11 @@ const App = () => {
               path="/freelancer/*" 
               element={
                 isLoggedIn && userRole === 'freelancer' ? (
-                  <FreelancerDashboard />
+                  <FreelancerDashboard user={user} /> // Pasar el objeto user como prop
                 ) : (
                   <Navigate to="/login" />
                 )
               } 
-            />
-
-<Route 
-              path="/cliente/*" 
-              element={
-                isLoggedIn && userRole === 'cliente' ? (
-                  <Free />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              } 
-            />
-            <Route 
-              path="/signup" 
-              element={<SignUp />} 
             />
             <Route 
               path="/" 
@@ -122,20 +101,14 @@ const App = () => {
                 isLoggedIn && userRole === 'freelancer' ? (
                   <Navigate to="/freelancer" />
                 ) : (
-                  <div align="center">
+                  <div className="home-content">
                     <h1>Bienvenido a nuestra plataforma</h1>
-                    <p>La manera más fácil de agendar citas sin complicaciones.</p>
-                    
-                    <button className="cta-button">Empieza ahora!</button><br />
-                    <img src="/src/img/page.png" alt="prueba" />
-                    
+                    <p>Contenido principal de la página</p>
+                    <button className="cta-button">Llamada a la acción</button>
                   </div>
                 )
               } 
             />
-            <Route path="/about" element={<InfoSections />} />
-            <Route path="/services" element={<Services />} /> {/* Add Services route */}
-            <Route path="/contact" element={<Contacto />} /> {/* Add Contacto route */}
             {/* Ruta catch-all para cualquier ruta no definida */}
             <Route 
               path="*" 

@@ -4,6 +4,13 @@
   --ruddy-blue: #4ea5ff;
   --antiflash-white: #f5f7fa;
 }
+.home-image {
+  width:auto;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
 
 .App {
   text-align: center;

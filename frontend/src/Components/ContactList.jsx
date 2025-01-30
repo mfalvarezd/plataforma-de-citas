@@ -1,39 +1,32 @@
-import React, { useState, useEffect } from "react";
-import axios from "../api/axios"; // Importa la instancia de axios configurada
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { TextField, List, ListItem, ListItemAvatar, Avatar, ListItemText, Box, Typography } from "@mui/material";
 import { Search } from "@mui/icons-material";
 
+const contacts = [
+  { id: 1, name: "Darcy Patterson", status: "Active now", avatar: "https://i.pravatar.cc/150?img=1" },
+  { id: 2, name: "Alex Hamilton", status: "Active 3 days ago", avatar: "https://i.pravatar.cc/150?img=2" },
+  { id: 3, name: "Bowen Group", status: "Active 12 days ago", avatar: "https://i.pravatar.cc/150?img=3" },
+  { id: 4, name: "SA Smith", status: "Active now", avatar: "https://i.pravatar.cc/150?img=4" },
+  { id: 5, name: "TaDFylor Smith", status: "Active now", avatar: "https://i.pravatar.cc/150?img=4" },
+  { id: 6, name: "GFAS Smith", status: "Active now", avatar: "https://i.pravatar.cc/150?img=4" },
+];
+
 const ContactList = () => {
   const [search, setSearch] = useState("");
-  const [contacts, setContacts] = useState([]);
-
-  useEffect(() => {
-    // Obtener usuarios desde la API
-    const fetchContacts = async () => {
-      try {
-        const response = await axios.get("/users"); // Ajusta el endpoint según tu API
-        setContacts(response.data);
-      } catch (error) {
-        console.error("Error fetching contacts:", error);
-      }
-    };
-
-    fetchContacts();
-  }, []);
 
   const filteredContacts = contacts.filter((contact) =>
     contact.name.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
-    <Box sx={{ width: "98%", p: 2, borderRadius: 2, bgcolor: "white" }}>
+    <Box sx={{ width: "98%", p: 2, borderRadius: 2, bgcolor: "white"}}>
       <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
         <Search sx={{ mr: 1, color: "gray" }} />
         <TextField
           fullWidth
           variant="standard"
-          placeholder="Buscar contactos..."
+          placeholder="Search contacts..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -51,11 +44,11 @@ const ContactList = () => {
             >
               <ListItem sx={{ borderBottom: "1px solid #eee" }}>
                 <ListItemAvatar>
-                  <Avatar src={contact.avatar || "https://i.pravatar.cc/192"} />
+                  <Avatar src={contact.avatar} />
                 </ListItemAvatar>
                 <ListItemText
                   primary={contact.name}
-                  secondary={<Typography variant="body2" color="text.secondary">{contact.status || "Activo"}</Typography>}
+                  secondary={<Typography variant="body2" color="text.secondary">{contact.status}</Typography>}
                 />
               </ListItem>
             </motion.div>

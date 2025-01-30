@@ -17,4 +17,8 @@ class Service extends Model
     public function freelancer(){
         return $this->belongsTo(User::class,'freelancer_id');
     }
+    public function contracts()
+    {
+        return $this->hasMany(Contract::class);
+    }
 }

@@ -1,50 +1,93 @@
 // src/Components/ScheduledServices.jsx
 import React, { useEffect, useState } from 'react';
-import './ScheduleService.css'; // Opcional: para estilos específicos
-import Calendar from './Calendar';
+import api from '../api/axios'; // Importar la instancia de axios configurada
+import './ScheduleService.css'; // Importar estilos específicos
+import CalendarFreelancer from './CalendarFreelancer'; // Crear este componente
 
-const ScheduledServices = () => {
-  const [scheduled, setScheduled] = useState([]);
+const ScheduledServices = ({ user }) => { // Recibir el objeto user como prop
+  const [contracts, setContracts] = useState([]);
+  const [loading, setLoading] = useState(true); // Estado para manejo de carga
+  const [error, setError] = useState(null); // Estado para manejo de errores
 
   useEffect(() => {
-    // Aquí realizarías una llamada a la API para obtener los servicios agendados
-    // Por ahora, usaremos datos de ejemplo
-    const fetchScheduledServices = async () => {
-      // Simulación de datos
-      const data = [
-        {
-          id: 1,
-          serviceName: 'Diseño de Logo',
-          client: 'Juan Pérez',
-          date: '2025-02-10',
-          time: '10:00',
-        },
-        {
-          id: 2,
-          serviceName: 'Desarrollo Web',
-          client: 'María López',
-          date: '2025-02-12',
-          time: '14:00',
-        },
-      ];
-      setScheduled(data);
+    const fetchContracts = async () => {
+      try {
+        const response = await api.get('/contracts');
+        const allContracts = response.data;
+
+        // Filtrar contratos para el freelancer actual
+        const freelancerContracts = allContracts.filter(contract => contract.freelancer_id === user.id);
+
+        setContracts(freelancerContracts);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error al obtener los contratos:', error.response ? error.response.data : error.message);
+        setError('Hubo un error al obtener los contratos.');
+        setLoading(false);
+      }
     };
 
-    fetchScheduledServices();
-  }, []);
+    fetchContracts();
+  }, [user.id]);
 
-  const handleCancel = (id) => {
-    // Aquí realizarías una llamada a la API para cancelar la cita
-    console.log('Cancelar cita con ID:', id);
-    // Actualizar el estado eliminando la cita cancelada
-    setScheduled(scheduled.filter(service => service.id !== id));
-    alert('Cita cancelada exitosamente!');
+  const handleAccept = async (contractId) => {
+    try {
+      const updatedData = {
+        status: 'active',
+      };
+
+      const response = await api.put(`/contracts/${contractId}`, updatedData);
+      console.log('Contrato aceptado:', response.data.contract);
+
+      // Actualizar el estado local
+      setContracts(contracts.map(contract => 
+        contract.id === contractId ? { ...contract, status: 'active' } : contract
+      ));
+      alert('Contrato aceptado exitosamente!');
+    } catch (error) {
+      console.error('Error al aceptar el contrato:', error.response ? error.response.data : error.message);
+      alert('Hubo un error al aceptar el contrato.');
+    }
   };
+
+  const handleCancel = async (contractId) => {
+    try {
+      const updatedData = {
+        status: 'cancelled',
+      };
+
+      const response = await api.put(`/contracts/${contractId}`, updatedData);
+      console.log('Contrato cancelado:', response.data.contract);
+
+      // Actualizar el estado local
+      setContracts(contracts.map(contract => 
+        contract.id === contractId ? { ...contract, status: 'cancelled' } : contract
+      ));
+      alert('Contrato cancelado exitosamente!');
+    } catch (error) {
+      console.error('Error al cancelar el contrato:', error.response ? error.response.data : error.message);
+      alert('Hubo un error al cancelar el contrato.');
+    }
+  };
+
+  // Filtrar contratos activos para el calendario
+  const activeContracts = contracts.filter(contract => contract.status === 'active');
+
+  // Verificar contratos activos
+  console.log('Contratos Activos para el Calendario:', activeContracts);
+
+  if (loading) {
+    return <p>Cargando contratos...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
     <div>
       <h2>Servicios Agendados</h2>
-      {scheduled.length === 0 ? (
+      {contracts.length === 0 ? (
         <p>No tienes servicios agendados.</p>
       ) : (
         <table className="scheduled-table">
@@ -54,30 +97,49 @@ const ScheduledServices = () => {
               <th>Cliente</th>
               <th>Fecha</th>
               <th>Hora</th>
+              <th>Status</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
-            {scheduled.map(service => (
-              <tr key={service.id}>
-                <td>{service.serviceName}</td>
-                <td>{service.client}</td>
-                <td>{service.date}</td>
-                <td>{service.time}</td>
+            {contracts.map(contract => (
+              <tr key={contract.id}>
+                <td>{contract.service.title}</td>
+                <td>{contract.client.name}</td>
+                <td>{contract.date}</td>
+                <td>{contract.start_time} - {contract.end_time}</td>
+                <td>{contract.status}</td>
                 <td>
-                  <button 
-                    onClick={() => handleCancel(service.id)} 
-                    className="cancel-button"
-                  >
-                    Cancelar
-                  </button>
+                  {contract.status === 'pending' && (
+                    <button 
+                      onClick={() => handleAccept(contract.id)} 
+                      className="accept-button"
+                    >
+                      Aceptar
+                    </button>
+                  )}
+                  {contract.status === 'active' && (
+                    <button 
+                      onClick={() => handleCancel(contract.id)} 
+                      className="cancel-button"
+                    >
+                      Cancelar
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
-      <Calendar scheduled={scheduled} />
+      
+      {/* Mostrar el calendario con contratos activos */}
+      {activeContracts.length > 0 && (
+        <div>
+          <h3>Calendario de Servicios Activos</h3>
+          <CalendarFreelancer contracts={activeContracts} />
+        </div>
+      )}
     </div>
   );
 };

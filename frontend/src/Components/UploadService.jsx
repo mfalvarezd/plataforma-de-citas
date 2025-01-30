@@ -3,11 +3,15 @@ import React, { useState } from 'react';
 import api from '../api/axios'; // Importar la instancia de axios configurada
 import { useNavigate } from 'react-router-dom';
 
+
 const UploadService = ({ user }) => { // Recibir el objeto user como prop
   const [service, setService] = useState({
     title: '',
     description: '',
     price: '',
+    date: '',
+    start_time: '',
+    end_time: '',
   });
 
   const navigate = useNavigate();
@@ -22,12 +26,21 @@ const UploadService = ({ user }) => { // Recibir el objeto user como prop
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Validar que end_time sea después de start_time
+      if (service.end_time <= service.start_time) {
+        alert('La hora de fin debe ser después de la hora de inicio.');
+        return;
+      }
+
       // Preparar los datos para enviar
       const serviceData = {
-        freelancer_id: user.id, // Obtener el ID del freelancer del objeto user
+        freelancer_id: user.id,
         title: service.title,
         description: service.description,
-        price: parseFloat(service.price), // Asegurarse de que el precio sea numérico
+        price: parseFloat(service.price),
+        date: service.date,
+        start_time: service.start_time,
+        end_time: service.end_time,
       };
 
       // Realizar la solicitud POST para crear el servicio
@@ -36,7 +49,7 @@ const UploadService = ({ user }) => { // Recibir el objeto user como prop
 
       alert('Servicio subido exitosamente!');
       // Resetear el formulario
-      setService({ title: '', description: '', price: '' });
+      setService({ title: '', description: '', price: '', date: '', start_time: '', end_time: '' });
 
       // Opcional: Redirigir al usuario o actualizar el estado
       navigate('/freelancer/scheduled-services'); // Por ejemplo, redirigir a servicios agendados
@@ -84,6 +97,39 @@ const UploadService = ({ user }) => { // Recibir el objeto user como prop
             placeholder="Ej. 50.00"
           />
         </div>
+        <div className="form-group">
+          <label>Fecha:</label>
+          <input 
+            type="date" 
+            name="date" 
+            value={service.date} 
+            onChange={handleChange} 
+            required 
+            placeholder="Fecha del servicio"
+          />
+        </div>
+        <div className="form-group">
+          <label>Hora de Inicio:</label>
+          <input 
+            type="time" 
+            name="start_time" 
+            value={service.start_time} 
+            onChange={handleChange} 
+            required 
+            placeholder="Hora de inicio"
+          />
+        </div>
+        <div className="form-group">
+          <label>Hora de Fin:</label>
+          <input 
+            type="time" 
+            name="end_time" 
+            value={service.end_time} 
+            onChange={handleChange} 
+            required 
+            placeholder="Hora de fin"
+          />
+        </div>
         <button type="submit" className="submit-button">Subir Servicio</button>
       </form>
     </div>
@@ -91,3 +137,4 @@ const UploadService = ({ user }) => { // Recibir el objeto user como prop
 };
 
 export default UploadService;
+

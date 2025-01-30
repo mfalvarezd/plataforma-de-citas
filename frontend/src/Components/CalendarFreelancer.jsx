@@ -1,60 +1,72 @@
-// src/Components/CalendarFreelancer.jsx
 import React, { useEffect, useState } from "react";
-import { ScheduleXCalendar, useCalendarApp } from "@schedule-x/react";
-import { createViewWeek, createViewMonthGrid } from "@schedule-x/calendar";
-import "@schedule-x/theme-default/dist/calendar.css";
-import { createEventModalPlugin } from "@schedule-x/event-modal";
-import { createDragAndDropPlugin } from "@schedule-x/drag-and-drop";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import { DateTime } from "luxon";
+import axios from "../api/axios"; // Asegúrate de configurar axios correctamente
 
-const CalendarFreelancer = ({ contracts }) => {
+function Calendar({ user }) {
   const [events, setEvents] = useState([]);
 
-  useEffect(() => {
-    // Convertir contratos activos a eventos de calendario
-    const calendarEvents = contracts.map(contract => {
-      const { date, start_time, end_time } = contract;
-      if (!date || !start_time || !end_time) {
-        console.warn(`Contrato con ID ${contract.id} tiene datos incompletos de fecha/hora.`);
-        return null;
-      }
-
-      // Crear objetos Date en formato ISO 8601
-      const startDateTime = new Date(`${date}T${start_time}:00`);
-      const endDateTime = new Date(`${date}T${end_time}:00`);
-
-      // Verificar si las fechas son válidas
-      if (isNaN(startDateTime) || isNaN(endDateTime)) {
-        console.warn(`Contrato con ID ${contract.id} tiene fechas/hora inválidas.`);
-        return null;
-      }
-
-      return {
+  // Función para obtener contratos desde la API
+  const fetchContracts = async () => {
+    try {
+      const response = await axios.get("/contracts", {
+        params: { client_id: user.id },
+      });
+  
+      console.log("Contratos obtenidos:", response.data);
+  
+      // Filtrar solo los contratos activos
+      const activeContracts = response.data.filter(contract => contract.status === "active");
+  
+      // Convertir contratos a eventos para FullCalendar
+      const formattedEvents = activeContracts.map((contract) => ({
         id: contract.id,
-        title: contract.service.title,
-        start: startDateTime, // Objeto Date
-        end: endDateTime, // Objeto Date
-        description: `Cliente: ${contract.client.name}`,
-      };
-    }).filter(event => event !== null); // Eliminar contratos sin date/time
+        title: `Contrato con ${contract.freelancer.name}`,
+        start: DateTime.fromFormat(
+          `${contract.date} ${contract.start_time}`,
+          "yyyy-MM-dd HH:mm"
+        ).toISO(),
+        end: DateTime.fromFormat(
+          `${contract.date} ${contract.end_time}`,
+          "yyyy-MM-dd HH:mm"
+        ).toISO(),
+        description: `Servicio: ${contract.service.title}`,
+      }));
+  
+      console.log("Eventos formateados (solo activos):", formattedEvents);
+      setEvents(formattedEvents);
+    } catch (error) {
+      console.error("Error fetching contracts:", error);
+    }
+  };
+  
 
-    // Añadir un console.log para verificar los eventos
-    console.log('Eventos para el Calendario:', calendarEvents);
+  useEffect(() => {
+    if (user) {
+      fetchContracts();
+    }
+  }, [user]);
 
-    setEvents(calendarEvents);
-  }, [contracts]);
+  return (
+    <div style={{ maxWidth: "90%", margin: "auto", padding: "20px" }}>
+      <h2>Calendario de Contratos</h2>
+      <FullCalendar
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+        initialView="timeGridWeek"
+        headerToolbar={{
+          left: "prev,next today",
+          center: "title",
+          right: "dayGridMonth,timeGridWeek,timeGridDay",
+        }}
+        events={events}
+        editable={true}
+        droppable={true}
+      />
+    </div>
+  );
+}
 
-  // Configuración del calendario usando useCalendarApp
-  const calendar = useCalendarApp({
-    views: [
-      createViewWeek(),
-      createViewMonthGrid(),
-    ],
-    events: events, // Eventos provenientes de props
-    selectDate: "2025-02-01T00:00:00", // Fecha inicial seleccionada en formato ISO
-    plugins: [createEventModalPlugin(), createDragAndDropPlugin()],
-  });
-
-  return <ScheduleXCalendar calendarApp={calendar} />;
-};
-
-export default CalendarFreelancer;
+export default Calendar;

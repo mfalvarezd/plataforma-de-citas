@@ -15,11 +15,14 @@ function Calendar({ user }) {
       const response = await axios.get("/contracts", {
         params: { client_id: user.id },
       });
-
+  
       console.log("Contratos obtenidos:", response.data);
-
+  
+      // Filtrar solo los contratos activos
+      const activeContracts = response.data.filter(contract => contract.status === "active");
+  
       // Convertir contratos a eventos para FullCalendar
-      const formattedEvents = response.data.map((contract) => ({
+      const formattedEvents = activeContracts.map((contract) => ({
         id: contract.id,
         title: `Contrato con ${contract.freelancer.name}`,
         start: DateTime.fromFormat(
@@ -32,8 +35,8 @@ function Calendar({ user }) {
         ).toISO(),
         description: `Servicio: ${contract.service.title}`,
       }));
-
-      console.log("Eventos formateados:", formattedEvents);
+  
+      console.log("Eventos formateados (solo activos):", formattedEvents);
       setEvents(formattedEvents);
     } catch (error) {
       console.error("Error fetching contracts:", error);

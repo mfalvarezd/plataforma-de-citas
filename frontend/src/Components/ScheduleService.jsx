@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import api from '../api/axios'; // Importar la instancia de axios configurada
 import './ScheduleService.css'; // Importar estilos específicos
 import CalendarFreelancer from './CalendarFreelancer'; // Crear este componente
+import Calendar from './Calendar';
 
 const ScheduledServices = ({ user }) => { // Recibir el objeto user como prop
   const [contracts, setContracts] = useState([]);
@@ -134,7 +135,7 @@ const ScheduledServices = ({ user }) => { // Recibir el objeto user como prop
       )}
       
       {/* Mostrar el calendario con contratos activos */}
-      
+      {<Calendar user={user}/>}
     </div>
   );
 };

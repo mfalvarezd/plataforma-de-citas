@@ -1,23 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "../api/axios"; // Importa la instancia de axios configurada
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  TextField,
-  List,
-  ListItem,
-  ListItemAvatar,
-  Avatar,
-  ListItemText,
-  Box,
-  Typography,
-  Snackbar,
-  Alert,
-} from "@mui/material";
+import {Dialog, DialogTitle,  DialogContent,  DialogActions,  Button,  TextField,  List,  ListItem,  ListItemAvatar,  Avatar,
+  ListItemText,  Box,  Typography,  Snackbar,  Alert,} from "@mui/material";
 import { Search } from "@mui/icons-material";
 
 const ContactList = ({ user }) => {
@@ -29,8 +14,8 @@ const ContactList = ({ user }) => {
   const [openServices, setOpenServices] = useState(false);
   const [confirmDialog, setConfirmDialog] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
-  const clientId = localStorage.getItem("clientId"); // Reemplaza con el método que uses para obtener el cliente logueado
-  const [startTime, setStartTime] = useState(""); // Hora de inicio en formato "HH:mm"
+  const clientId = localStorage.getItem("clientId"); 
+  const [startTime, setStartTime] = useState(""); 
   const [endTime, setEndTime] = useState(""); // Hora de fin en formato "HH:mm"
   const [contractDate, setContractDate] = useState(""); // Fecha en formato "YYYY-MM-DD"
 
